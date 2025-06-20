@@ -29,6 +29,12 @@ export class ModelError extends Error {
   }
 }
 
+// Helper function to get authorization headers
+const getHeaders = () => {
+  return {
+    'Content-Type': 'application/json',
+  };
+};
 
 // 获取授权头的辅助函数
 const getAuthHeaders = () => {
