@@ -28,7 +28,7 @@ jobs:
         id: get-sha
         run: echo "sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
-  cleanup:
+  prepare:
     runs-on: ${{ fromJson(inputs.runner_label_json) }}
     needs: checkout
     steps:
