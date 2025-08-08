@@ -9,16 +9,16 @@
 docker buildx create --name nexent_builder --use
 
 # 🚀 为多个架构构建应用程序
-docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t nexent/nexent -f make/main/Dockerfile . --push
-docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t ccr.ccs.tencentyun.com/nexent-hub/nexent -f make/web/Dockerfile . --push
+docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t nexent/nexent-commercial -f make/main/Dockerfile . --push
+docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t ccr.ccs.tencentyun.com/nexent-hub/-commercial -f make/main/Dockerfile . --push
 
 # 📊 为多个架构构建数据处理服务
-docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t nexent/nexent-data-process -f make/data_process/Dockerfile . --push
-docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t ccr.ccs.tencentyun.com/nexent-hub/nexent-data-process -f make/web/Dockerfile . --push
+docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t nexent/nexent-data-process-commercial -f make/data_process/Dockerfile . --push
+docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t ccr.ccs.tencentyun.com/nexent-hub/nexent-data-process-commercial -f make/data_process/Dockerfile . --push
 
 # 🌐 为多个架构构建前端
-docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t nexent/nexent-web -f make/web/Dockerfile . --push
-docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t ccr.ccs.tencentyun.com/nexent-hub/nexent-web -f make/web/Dockerfile . --push
+docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t nexent/nexent-web-commercial -f make/web/Dockerfile . --push
+docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t ccr.ccs.tencentyun.com/nexent-hub/nexent-web-commercial -f make/web/Dockerfile . --push
 
 # 📚 为多个架构构建文档
 docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t nexent/nexent-docs -f make/docs/Dockerfile . --push
@@ -29,13 +29,13 @@ docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -t ccr.c
 
 ```bash
 # 🚀 构建应用程序镜像（仅当前架构）
-docker build --progress=plain -t nexent/nexent -f make/main/Dockerfile .
+docker build --progress=plain -t nexent/nexent-commercial -f make/main/Dockerfile .
 
 # 📊 构建数据处理镜像（仅当前架构）
-docker build --progress=plain -t nexent/nexent-data-process -f make/data_process/Dockerfile .
+docker build --progress=plain -t nexent/nexent-data-process-commercial -f make/data_process/Dockerfile .
 
 # 🌐 构建前端镜像（仅当前架构）
-docker build --progress=plain -t nexent/nexent-web -f make/web/Dockerfile .
+docker build --progress=plain -t nexent/nexent-web-commercial -f make/web/Dockerfile .
 
 # 📚 构建文档镜像（仅当前架构）
 docker build --progress=plain -t nexent/nexent-docs -f make/docs/Dockerfile .
