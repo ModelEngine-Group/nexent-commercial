@@ -84,6 +84,20 @@ class ModelRequest(BaseModel):
     connect_status: Optional[str] = ''
 
 
+class ProviderModelRequest(BaseModel):
+    provider: str
+    model_type: str
+    api_key: Optional[str] = ''
+
+
+class BatchCreateModelsRequest(BaseModel):
+    api_key: str
+    models: List[Dict]
+    provider: str
+    type: str
+    max_tokens: int
+
+
 # Configuration models
 class ModelApiConfig(BaseModel):
     apiKey: str
@@ -216,6 +230,7 @@ class ProcessParams(BaseModel):
     chunking_strategy: Optional[str] = "basic"
     source_type: str
     index_name: str
+    authorization: Optional[str] = None
 
 
 class OpinionRequest(BaseModel):
@@ -299,6 +314,7 @@ class MessageIdRequest(BaseModel):
 
 
 class ExportAndImportAgentInfo(BaseModel):
+    agent_id: int
     name: str
     description: str
     business_description: str
@@ -310,12 +326,15 @@ class ExportAndImportAgentInfo(BaseModel):
     few_shots_prompt: Optional[str] = None
     enabled: bool
     tools: List[ToolConfig]
-    managed_agents: List
+    managed_agents: List[int]
+
+class ExportAndImportDataFormat(BaseModel):
+    agent_id: int
+    agent_info: Dict[str, ExportAndImportAgentInfo]
 
 
 class AgentImportRequest(BaseModel):
-    agent_id: int
-    agent_info: ExportAndImportAgentInfo
+    agent_info: ExportAndImportDataFormat
 
 
 class ConvertStateRequest(BaseModel):
@@ -327,3 +346,24 @@ class ConvertStateRequest(BaseModel):
 class ConvertStateResponse(BaseModel):
     """Response schema for /tasks/convert_state endpoint"""
     state: str
+
+
+# ---------------------------------------------------------------------------
+# Memory Feature Data Models (Missing previously)
+# ---------------------------------------------------------------------------
+
+class MemoryAgentShareMode(str, Enum):
+    """Memory sharing mode for agent-level memory.
+
+    always: Agent memories are always shared with others.
+    ask:    Ask user every time whether to share.
+    never:  Never share agent memories.
+    """
+
+    ALWAYS = "always"
+    ASK = "ask"
+    NEVER = "never"
+
+    @classmethod
+    def default(cls) -> "MemoryAgentShareMode":
+        return cls.NEVER

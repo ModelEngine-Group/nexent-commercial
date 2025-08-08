@@ -35,6 +35,8 @@ export const API_ENDPOINTS = {
     export: `${API_BASE_URL}/agent/export`,
     import: `${API_BASE_URL}/agent/import`,
     searchInfo: `${API_BASE_URL}/agent/search_info`,
+    relatedAgent: `${API_BASE_URL}/agent/related_agent`,
+    deleteRelatedAgent: `${API_BASE_URL}/agent/delete_related_agent`,
   },
   tool: {
     list: `${API_BASE_URL}/tool/list`,
@@ -74,6 +76,9 @@ export const API_ENDPOINTS = {
     // Custom model service
     customModelList: `${API_BASE_URL}/model/list`,
     customModelCreate: `${API_BASE_URL}/model/create`,
+    customModelCreateProvider: `${API_BASE_URL}/model/create_provider`,
+    customModelBatchCreate: `${API_BASE_URL}/model/batch_create_models`,
+    getProviderSelectedModalList: `${API_BASE_URL}/model/provider/list`,
     customModelDelete: (displayName: string) => `${API_BASE_URL}/model/delete?display_name=${encodeURIComponent(displayName)}`,
     customModelHealthcheck: (displayName: string) => `${API_BASE_URL}/model/healthcheck?display_name=${encodeURIComponent(displayName)}`,
     updateConnectStatus: `${API_BASE_URL}/model/update_connect_status`,
@@ -108,6 +113,26 @@ export const API_ENDPOINTS = {
     delete: `${API_BASE_URL}/mcp/`,
     list: `${API_BASE_URL}/mcp/list`,
     recover: `${API_BASE_URL}/mcp/recover`,
+  },
+  memory: {
+    // ---------------- Memory configuration ----------------
+    config: {
+      load: `${API_BASE_URL}/memory/config/load`,
+      set: `${API_BASE_URL}/memory/config/set`,
+      disableAgentAdd: `${API_BASE_URL}/memory/config/disable_agent`,
+      disableAgentRemove: (agentId: string | number) => `${API_BASE_URL}/memory/config/disable_agent/${agentId}`,
+      disableUserAgentAdd: `${API_BASE_URL}/memory/config/disable_useragent`,
+      disableUserAgentRemove: (agentId: string | number) => `${API_BASE_URL}/memory/config/disable_useragent/${agentId}`,
+    },
+
+    // ---------------- Memory CRUD ----------------
+    entry: {
+      add: `${API_BASE_URL}/memory/add`,
+      search: `${API_BASE_URL}/memory/search`,
+      list: `${API_BASE_URL}/memory/list`,
+      delete: (memoryId: string | number) => `${API_BASE_URL}/memory/delete/${memoryId}`,
+      clear: `${API_BASE_URL}/memory/clear`,
+    },
   }
 };
 
@@ -174,6 +199,13 @@ export const fetchWithErrorHandling = async (url: string, options: RequestInit =
 function handleSessionExpired() {
   // 防止重复触发
   if (window.__isHandlingSessionExpired) {
+    return;
+  }
+
+  // 修复：在首页不触发会话过期事件
+  const currentPath = window.location.pathname;
+  if (currentPath === '/' || currentPath.startsWith('/?') || 
+      currentPath.startsWith('/zh') || currentPath.startsWith('/en')) {
     return;
   }
 

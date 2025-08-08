@@ -25,6 +25,7 @@ import { getRoleColor } from "@/lib/auth"
 import { useAuth } from "@/hooks/useAuth"
 import { extractColorsFromUri } from "@/lib/avatar"
 import { useTranslation } from "react-i18next"
+import { useUrlParams, urlParamTransforms } from "@/hooks/useUrlParams"
 
 // conversation status indicator component
 const ConversationStatusIndicator = ({ 
@@ -402,25 +403,27 @@ export function ChatSidebar({
         )}
 
         {/* Settings button */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex justify-center">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full hover:bg-slate-100"
-                  onClick={onSettingsClick}
-                >
-                  <Settings className="h-6 w-6" />
-                </Button>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              {t('chatLeftSidebar.settings')}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        {!hideSettings && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex justify-center">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-full hover:bg-slate-100"
+                    onClick={onSettingsClick}
+                  >
+                    <Settings className="h-6 w-6" />
+                  </Button>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                {t('chatLeftSidebar.settings')}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </>
     );
   };
@@ -545,10 +548,10 @@ export function ChatSidebar({
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 rounded-full hover:bg-slate-100"
+              className="size-10 rounded-full hover:bg-slate-100"
               onClick={onSettingsClick}
             >
-              <Settings className="h-8 w-8" />
+              <Settings className="size-5" />
             </Button>
           </div>
           </div>
